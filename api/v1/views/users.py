@@ -48,7 +48,7 @@ def delete_user(user_id):
 def insert_user():
     """Insert a new User object"""
     body = request.get_json()
-    if type(body) != dict:
+    if type(body) is not dict:
         return abort(400, {'message': 'Not a JSON'})
     if 'email' not in body:
         return abort(400, {'message': 'Missing email'})
@@ -68,7 +68,7 @@ def update_user_by_id(user_id):
     if user is None:
         abort(404)
     body = request.get_json()
-    if type(body) != dict:
+    if type(body) is not dict:
         return abort(400, {'message': 'Not a JSON'})
     for key, value in body.items():
         if key not in ["id", "email", "created_at", "updated_at"]:
