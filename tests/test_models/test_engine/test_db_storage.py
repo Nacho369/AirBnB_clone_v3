@@ -5,14 +5,24 @@ Contains the TestDBStorageDocs and TestDBStorage classes
 import time
 import unittest
 import sys
-from models.engine.db_storage import DBStorage
-from models import storage
-from models.user import User
-from models.state import State
-from models import storage
-from console import HBNBCommand
 from os import getenv
 from io import StringIO
+import json
+import pep8
+import unittest
+import models
+from models.engine.db_storage import DBStorage
+from models import storage
+from models import storage
+from console import HBNBCommand
+from models.engine import db_storage
+from models.amenity import Amenity
+from models.base_model import BaseModel
+from models.city import City
+from models.place import Place
+from models.review import Review
+from models.state import State
+from models.user import User
 
 db = getenv("HBNB_TYPE_STORAGE")
 
@@ -133,6 +143,16 @@ class test_DBStorage(unittest.TestCase):
         self.assertTrue(result.id, new_state.id)
         self.assertIsInstance(result, State)
 
+    def test_get_db(self):
+        """Test method for obtaining an instance on db storage"""
+        storage = DBStorage()
+        dic = {"name": "Lagos"}
+        instance = State(**dic)
+        storage.new(instance)
+        storage.save()
+        get_instance = storage.new(State, instance.id)
+        self.assertEqual(get_instance, instance)
+
     def test_count(self):
         '''
             Test if count method returns expected number of objects
@@ -146,3 +166,16 @@ class test_DBStorage(unittest.TestCase):
         new_state3 = State(name="California")
         storage.new(new_state3)
         self.assertEqual(old_count + 3, storage.count("State"))
+
+    def test_count(self):
+        """Test count method on db storage"""
+        storage = DBStorage()
+        dic = {"name": "Abuja"}
+        state = State(**dic)
+        storage.new(state)
+        dic = {"name": "Benin", "state_id": state.id}
+        city = City(**dic)
+        storage.new(city)
+        storage.save()
+        c = storage.count()
+        self.assertEqual(len(storage.all()), c)
