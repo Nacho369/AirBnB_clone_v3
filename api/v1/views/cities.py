@@ -1,5 +1,7 @@
 #!/usr/bin/python3
-"""This module implement a rule that return a view"""
+"""
+This module implement a rule that return a view
+"""
 from flask import jsonify, abort, request
 from models import storage
 from api.v1.views import app_views
